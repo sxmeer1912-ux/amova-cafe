@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Amova Cafe Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            
+            background: #f5f1e8;
+            color: #173d25;
+        }
+
+        header {
+            background: #173d25;
+            color: white;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h2 {
+            margin: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .menu-btn {
+            background: #d7bd67;
+            color: #173d25;
+            padding: 10px 16px;
+            border-radius: 20px;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #173d25;
+            padding: 10px 16px;
+            border-radius: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        /* STATISTICS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .stat-icon {
+            font-size: 30px;
+        }
+
+        .stat-card h3 {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .sales-card {
+            background: #173d25;
+            color: white;
+        }
+
+        .sales-card p {
+            color: #d7bd67;
+        }
+
+        /* ORDERS */
+
+        .orders-title {
+            margin-bottom: 15px;
+        }
+
+        .orders {
+            display: grid;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .order-card h3 {
+            margin-top: 0;
+        }
+
+        .order-info {
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+
+        .delivery {
+            background: #ffe08a;
+        }
+
+        .pickup {
+            background: #d7bd67;
+        }
+
+        .new {
+            background: #fff3cd;
+        }
+
+        .preparing {
+            background: #ffe08a;
+        }
+
+        .ready {
+            background: #9be7a1;
+        }
+
+        .completed {
+            background: #d7bd67;
+        }
+
+        .price-box {
+            background: #f5f1e8;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .final-total {
+            border-top: 2px solid #d7bd67;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .status-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .status-buttons button {
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+
+        .btn-preparing {
+            background: #ffe08a;
+        }
+
+        .btn-ready {
+            background: #9be7a1;
+        }
+
+        .btn-completed {
+            background: #d7bd67;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .container {
+                margin: 15px auto;
+                padding: 12px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px 8px;
+            }
+
+            .stat-card p {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h2>☕ Amova Cafe Admin</h2>
+
+    <div class="header-buttons">
+
+        <button
+            class="menu-btn"
+            onclick="window.location.href='menu.html'"
+        >
+            📋 Manage Menu
+        </button>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- STATISTICS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🆕</div>
+
+            <h3>New Orders</h3>
+
+            <p id="newCount">0</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">👨‍🍳</div>
+
+            <h3>Preparing</h3>
+
+            <p id="preparingCount">0</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">✅</div>
+
+            <h3>Ready</h3>
+
+            <p id="readyCount">0</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🎉</div>
+
+            <h3>Completed</h3>
+
+            <p id="completedCount">0</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">🛵</div>
+
+            <h3>Delivery Orders</h3>
+
+            <p id="deliveryCount">0</p>
+
+        </div>
+
+
+        <div class="stat-card sales-card">
+
+            <div class="stat-icon">💰</div>
+
+            <h3>Total Sales</h3>
+
+            <p>₹<span id="totalSales">0</span></p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ORDERS -->
+
+    <h2 class="orders-title">
+        📦 Customer Orders
+    </h2>
+
+
+    <div id="orders" class="orders">
+
+        Loading orders...
+
+    </div>
+
+
+</div>
+
+
+<script type="module">
+
+
+    import { db, auth } from "../js/firebase.js";
+
+
+    import {
+        collection,
+        query,
+        orderBy,
+        onSnapshot,
+        doc,
+        updateDoc
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    import {
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    /* =========================
+       CHECK LOGIN
+    ========================= */
+
+    onAuthStateChanged(auth, function(user) {
+
+        if (user) {
+
+            loadOrders();
+
+        } else {
+
+            window.location.href = "login.html";
+
+        }
+
+    });
+
+
+    /* =========================
+       LOAD ORDERS
+    ========================= */
+
+    function loadOrders() {
+
+
+        const ordersContainer =
+            document.getElementById("orders");
+
+
+        const ordersQuery = query(
+            collection(db, "orders"),
+            orderBy("createdAt", "desc")
+        );
+
+
+        onSnapshot(
+            ordersQuery,
+
+            function(snapshot) {
+
+
+                let newCount = 0;
+                let preparingCount = 0;
+                let readyCount = 0;
+                let completedCount = 0;
+                let deliveryCount = 0;
+                let totalSales = 0;
+
+
+                ordersContainer.innerHTML = "";
+
+
+                if (snapshot.empty) {
+
+                    ordersContainer.innerHTML = `
+                        <div class="empty">
+                            📦 No orders yet.
+                        </div>
+                    `;
+
+                }
+
+
+                snapshot.forEach(function(orderDoc) {
+
+
+                    const order = orderDoc.data();
+
+
+                    /* COUNT STATUS */
+
+                    if (order.status === "New") {
+                        newCount++;
+                    }
+
+                    if (order.status === "Preparing") {
+                        preparingCount++;
+                    }
+
+                    if (order.status === "Ready") {
+                        readyCount++;
+                    }
+
+                    if (order.status === "Completed") {
+                        completedCount++;
+                    }
+
+
+                    /* DELIVERY COUNT */
+
+                    if (order.orderType === "Delivery") {
+                        deliveryCount++;
+                    }
+
+
+                    /* TOTAL SALES */
+
+                    totalSales =
+                        totalSales +
+                        Number(order.total || 0);
+
+
+                    /* ITEMS */
+
+                    let itemsHTML = "";
+
+
+                    if (Array.isArray(order.items)) {
+
+                        order.items.forEach(function(item) {
+
+                            const itemTotal =
+                                Number(item.price || 0) *
+                                Number(item.quantity || 0);
+
+
+                            itemsHTML += `
+                                <li>
+                                    ${item.name}
+                                    × ${item.quantity}
+                                    — ₹${itemTotal}
+                                </li>
+                            `;
+
+                        });
+
+                    }
+
+
+                    /* SUBTOTAL */
+
+                    let subtotal =
+                        Number(order.subtotal || 0);
+
+
+                    /* OLD ORDERS */
+
+                    if (
+                        subtotal === 0 &&
+                        order.total
+                    ) {
+
+                        subtotal =
+                            Number(order.total);
+
+                    }
+
+
+                    /* DELIVERY CHARGE */
+
+                    const deliveryCharge =
+                        Number(order.deliveryCharge || 0);
+
+
+                    /* FINAL TOTAL */
+
+                    const finalTotal =
+                        Number(order.total || 0);
+
+
+                    /* ORDER TYPE */
+
+                    let orderTypeHTML = "";
+
+
+                    if (order.orderType === "Delivery") {
+
+                        orderTypeHTML = `
+                            <span class="badge delivery">
+                                🛵 Delivery
+                            </span>
+                        `;
+
+                    } else {
+
+                        orderTypeHTML = `
+                            <span class="badge pickup">
+                                🏪 Pickup
+                            </span>
+                        `;
+
+                    }
+
+
+                    /* STATUS */
+
+                    let statusClass = "new";
+
+
+                    if (order.status === "Preparing") {
+                        statusClass = "preparing";
+                    }
+
+                    if (order.status === "Ready") {
+                        statusClass = "ready";
+                    }
+
+                    if (order.status === "Completed") {
+                        statusClass = "completed";
+                    }
+
+
+                    /* ORDER CARD */
+
+                    ordersContainer.innerHTML += `
+
+                        <div class="order-card">
+
+                            <h3>
+                                🧾 ${order.orderNumber || "Order"}
+                            </h3>
+
+
+                            <div class="order-info">
+
+                                <strong>
+                                    Customer:
+                                </strong>
+
+                                ${order.customerName || "N/A"}
+
+                                <br>
+
+
+                                <strong>
+                                    Mobile:
+                                </strong>
+
+                                ${order.mobile || "N/A"}
+
+                                <br>
+
+
+                                <strong>
+                                    Order Type:
+                                </strong>
+
+                                ${orderTypeHTML}
+
+                                <br>
+
+
+                                <strong>
+                                    Address:
+                                </strong>
+
+                                ${
+                                    order.orderType === "Delivery"
+                                    ? (order.address || "N/A")
+                                    : "Pickup"
+                                }
+
+                                <br>
+
+
+                                <strong>
+                                    Payment:
+                                </strong>
+
+                                ${order.paymentMethod || "N/A"}
+
+                                <br>
+
+
+                                <strong>
+                                    Status:
+                                </strong>
+
+                                <span class="badge ${statusClass}">
+                                    ${order.status || "New"}
+                                </span>
+
+
+                                <br><br>
+
+
+                                <strong>
+                                    Items:
+                                </strong>
+
+
+                                <ul>
+                                    ${itemsHTML}
+                                </ul>
+
+
+                            </div>
+
+
+                            <!-- PRICE -->
+
+                            <div class="price-box">
+
+
+                                <div class="price-row">
+
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <strong>
+                                        ₹${subtotal}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="price-row">
+
+                                    <span>
+                                        Delivery Charge
+                                    </span>
+
+                                    <strong>
+                                        ₹${deliveryCharge}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="price-row final-total">
+
+                                    <span>
+                                        Final Total
+                                    </span>
+
+                                    <strong>
+                                        ₹${finalTotal}
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- STATUS BUTTONS -->
+
+                            <div class="status-buttons">
+
+
+                                <button
+                                    class="btn-preparing"
+                                    onclick="updateStatus(
+                                        '${orderDoc.id}',
+                                        'Preparing'
+                                    )"
+                                >
+                                    👨‍🍳 Preparing
+                                </button>
+
+
+                                <button
+                                    class="btn-ready"
+                                    onclick="updateStatus(
+                                        '${orderDoc.id}',
+                                        'Ready'
+                                    )"
+                                >
+                                    ✅ Ready
+                                </button>
+
+
+                                <button
+                                    class="btn-completed"
+                                    onclick="updateStatus(
+                                        '${orderDoc.id}',
+                                        'Completed'
+                                    )"
+                                >
+                                    🎉 Completed
+                                </button>
+
+
+                            </div>
+
+
+                        </div>
+
+                    `;
+
+                });
+
+
+                /* UPDATE DASHBOARD */
+
+                document.getElementById("newCount").textContent =
+                    newCount;
+
+
+                document.getElementById("preparingCount").textContent =
+                    preparingCount;
+
+
+                document.getElementById("readyCount").textContent =
+                    readyCount;
+
+
+                document.getElementById("completedCount").textContent =
+                    completedCount;
+
+
+                document.getElementById("deliveryCount").textContent =
+                    deliveryCount;
+
+
+                document.getElementById("totalSales").textContent =
+                    totalSales;
+
+
+            },
+
+
+            function(error) {
+
+                console.error(error);
+
+                ordersContainer.innerHTML = `
+                    <div class="empty">
+                        ❌ Error loading orders.
+                        <br><br>
+                        ${error.message}
+                    </div>
+                `;
+
+            }
+
+        );
+
+    }
+
+
+    /* =========================
+       UPDATE STATUS
+    ========================= */
+
+    async function updateStatus(
+        orderId,
+        newStatus
+    ) {
+
+
+        try {
+
+
+            await updateDoc(
+                doc(db, "orders", orderId),
+                {
+                    status: newStatus
+                }
+            );
+
+
+        } catch (error) {
+
+
+            console.error(error);
+
+
+            alert(
+                "❌ Status update failed: " +
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    async function logout() {
+
+
+        try {
+
+
+            await signOut(auth);
+
+
+            window.location.href =
+                "login.html";
+
+
+        } catch (error) {
+
+
+            alert(
+                "❌ Logout failed: " +
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* MAKE FUNCTIONS GLOBAL */
+
+    window.updateStatus = updateStatus;
+
+    window.logout = logout;
+
+
+</script>
+
+
+</body>
+
+</html>

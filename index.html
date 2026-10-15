@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Amova Cafe</title>
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fffaf5;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+            width: 100%;
+            background: #6b3e26;
+            color: white;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .navbar {
+            width: 100%;
+            max-width: 1250px;
+
+            min-height: 68px;
+
+            margin: auto;
+
+            padding: 10px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo {
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav-right {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .user-box {
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .nav-link {
+            color: white;
+
+            text-decoration: none;
+
+            padding: 9px 12px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-link:hover {
+            background:
+                rgba(255, 255, 255, 0.12);
+        }
+
+
+        .logout-btn {
+            border: none;
+
+            background: transparent;
+
+            color: white;
+
+            padding: 9px 10px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .cart-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            color: white;
+
+            text-decoration: none;
+
+            background: #e76f51;
+
+            padding: 11px 17px;
+
+            border-radius: 25px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+
+        .cart-button:hover {
+            background: #d95d42;
+
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           HERO
+           FULL POSTER + BLURRED BACKGROUND
+        ===================================================== */
+
+        .hero {
+            position: relative;
+
+            width: 100%;
+
+            min-height: 620px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: #eeeeee;
+        }
+
+
+        /* -----------------------------------------------------
+           BLURRED POSTER BACKGROUND
+        ----------------------------------------------------- */
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            inset: -40px;
+
+            background-image:
+                url("images/Opening-flyer.jpg");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+
+            filter: blur(25px);
+
+            transform: scale(1.08);
+
+            opacity: 0.70;
+
+            z-index: 0;
+        }
+
+
+        /* -----------------------------------------------------
+           SOFT OVERLAY
+        ----------------------------------------------------- */
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                rgba(255, 255, 255, 0.15);
+
+            z-index: 1;
+        }
+
+
+        /* -----------------------------------------------------
+           ORIGINAL POSTER
+        ----------------------------------------------------- */
+
+        .hero img {
+            position: relative;
+
+            z-index: 2;
+
+            display: block;
+
+            width: auto;
+
+            height: 620px;
+
+            max-width: 100%;
+
+            object-fit: contain;
+
+            object-position: center;
+
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, 0.22);
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .container {
+            width: 100%;
+
+            max-width: 1250px;
+
+            margin: auto;
+
+            padding:
+                35px 20px 55px;
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .section-title {
+            text-align: center;
+
+            color: #6b3e26;
+
+            font-size: 32px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .section-subtitle {
+            text-align: center;
+
+            color: #777;
+
+            font-size: 15px;
+
+            margin-bottom: 28px;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .search-box {
+            width: 100%;
+
+            max-width: 620px;
+
+            margin:
+                0 auto 28px;
+        }
+
+
+        .search-box input {
+            width: 100%;
+
+            padding:
+                15px 20px;
+
+            border:
+                1px solid #ddd;
+
+            border-radius: 30px;
+
+            outline: none;
+
+            background: white;
+
+            font-size: 16px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        .search-box input:focus {
+            border-color: #6b3e26;
+        }
+
+
+        /* =====================================================
+           CATEGORY BUTTONS
+        ===================================================== */
+
+        .categories {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 30px;
+        }
+
+
+        .category-btn {
+            border:
+                1px solid #d8c6b8;
+
+            background: white;
+
+            color: #6b3e26;
+
+            padding:
+                9px 17px;
+
+            border-radius: 25px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #6b3e26;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           MENU GRID
+        ===================================================== */
+
+        .menu-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           MENU CARD
+        ===================================================== */
+
+        .menu-card {
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.09);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        .menu-card:hover {
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 8px 22px
+                rgba(0, 0, 0, 0.13);
+        }
+
+
+        /* =====================================================
+           MENU IMAGE
+        ===================================================== */
+
+        .menu-image {
+            width: 100%;
+
+            height: 210px;
+
+            background: #f5f1ed;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+
+        .menu-image img {
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+        }
+
+
+        /* =====================================================
+           MENU CONTENT
+        ===================================================== */
+
+        .menu-content {
+            padding: 16px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            flex: 1;
+        }
+
+
+        .menu-name {
+            color: #6b3e26;
+
+            font-size: 19px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .menu-category {
+            color: #888;
+
+            font-size: 13px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .menu-bottom {
+            margin-top: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .menu-price {
+            color: #e76f51;
+
+            font-size: 19px;
+
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           ADD BUTTON
+        ===================================================== */
+
+        .add-btn {
+            border: none;
+
+            background: #6b3e26;
+
+            color: white;
+
+            padding:
+                10px 14px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            transition: 0.2s;
+        }
+
+
+        .add-btn:hover {
+            background: #4f2d1c;
+        }
+
+
+        /* =====================================================
+           LOADING / EMPTY
+        ===================================================== */
+
+        .loading,
+        .empty {
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 45px;
+
+            color: #777;
+        }
+
+
+        .loading {
+            color: #6b3e26;
+
+            font-size: 17px;
+        }
+
+
+        .empty h3 {
+            color: #6b3e26;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+
+            left: 50%;
+
+            bottom: 25px;
+
+            transform:
+                translate(-50%, 120px);
+
+            background: #2a9d8f;
+
+            color: white;
+
+            padding:
+                13px 20px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            z-index: 3000;
+
+            opacity: 0;
+
+            transition:
+                transform 0.3s,
+                opacity 0.3s;
+
+            max-width: 90%;
+
+            text-align: center;
+        }
+
+
+        .toast.show {
+            transform:
+                translate(-50%, 0);
+
+            opacity: 1;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            background: #4b2b1c;
+
+            color: white;
+
+            text-align: center;
+
+            padding:
+                25px 15px;
+        }
+
+
+        footer p {
+            margin: 5px 0;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1050px) {
+
+            .menu-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            /* HEADER */
+
+            .navbar {
+                min-height: 60px;
+
+                padding:
+                    9px 12px;
+
+                gap: 7px;
+            }
+
+
+            .logo {
+                font-size: 19px;
+            }
+
+
+            .nav-right {
+                gap: 2px;
+            }
+
+
+            .nav-link,
+            .logout-btn {
+                padding:
+                    7px 5px;
+
+                font-size: 12px;
+            }
+
+
+            .user-box {
+                display: none !important;
+            }
+
+
+            .cart-button {
+                padding:
+                    9px 12px;
+
+                font-size: 12px;
+            }
+
+
+            /* HERO */
+
+            .hero {
+                width: 100%;
+
+                min-height: 0;
+
+                height: auto;
+            }
+
+
+            .hero::before {
+                filter: blur(18px);
+
+                transform: scale(1.08);
+
+                opacity: 0.70;
+            }
+
+
+            .hero img {
+                width: 100%;
+
+                height: auto;
+
+                max-width: 100%;
+
+                object-fit: contain;
+
+                object-position: center;
+
+                box-shadow:
+                    0 5px 20px
+                    rgba(0, 0, 0, 0.18);
+            }
+
+
+            /* MAIN */
+
+            .container {
+                padding:
+                    28px 12px 45px;
+            }
+
+
+            .section-title {
+                font-size: 26px;
+            }
+
+
+            .section-subtitle {
+                font-size: 14px;
+
+                margin-bottom: 22px;
+            }
+
+
+            /* SEARCH */
+
+            .search-box {
+                margin-bottom: 20px;
+            }
+
+
+            .search-box input {
+                padding:
+                    13px 17px;
+
+                font-size: 15px;
+            }
+
+
+            /* CATEGORIES */
+
+            .categories {
+                justify-content: flex-start;
+
+                flex-wrap: nowrap;
+
+                overflow-x: auto;
+
+                padding-bottom: 5px;
+
+                scrollbar-width: none;
+
+                margin-bottom: 22px;
+            }
+
+
+            .categories::-webkit-scrollbar {
+                display: none;
+            }
+
+
+            .category-btn {
+                flex-shrink: 0;
+
+                padding:
+                    8px 14px;
+
+                font-size: 13px;
+            }
+
+
+            /* MENU */
+
+            .menu-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 12px;
+            }
+
+
+            .menu-image {
+                height: 155px;
+            }
+
+
+            .menu-content {
+                padding: 12px;
+            }
+
+
+            .menu-name {
+                font-size: 16px;
+            }
+
+
+            .menu-category {
+                font-size: 12px;
+            }
+
+
+            .menu-price {
+                font-size: 16px;
+            }
+
+
+            .add-btn {
+                padding:
+                    8px 10px;
+
+                font-size: 12px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .logo {
+                font-size: 17px;
+            }
+
+
+            .cart-button {
+                padding:
+                    8px 9px;
+
+                font-size: 11px;
+            }
+
+
+            .nav-link,
+            .logout-btn {
+                font-size: 11px;
+            }
+
+
+            .hero img {
+                width: 100%;
+
+                height: auto;
+            }
+
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .menu-image {
+                height: 210px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header>
+
+        <div class="navbar">
+
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                ☕ Amova Cafe
+            </a>
+
+
+            <div class="nav-right">
+
+
+                <div
+                    id="userBox"
+                    class="user-box"
+                    style="display:none;"
+                >
+
+                    <span
+                        id="userName"
+                    ></span>
+
+                </div>
+
+
+                <a
+                    href="login.html"
+                    id="loginLink"
+                    class="nav-link"
+                >
+                    Login
+                </a>
+
+
+                <button
+                    id="logoutButton"
+                    class="logout-btn"
+                    style="display:none;"
+                >
+                    Logout
+                </button>
+
+
+                <a
+                    href="cart.html"
+                    class="cart-button"
+                >
+                    🛒 Cart
+
+                    <span
+                        id="cartCount"
+                    >
+                        0
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+
+        <img
+            src="images/Opening-flyer.jpg"
+            alt="Amova Cafe"
+        >
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="container">
+
+
+        <h1 class="section-title">
+            Our Menu
+        </h1>
+
+
+        <p class="section-subtitle">
+            Fresh • Delicious • Made with Love ❤️
+        </p>
+
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="🔍 Search juices, coffee, sandwich..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+
+        <!-- CATEGORY BUTTONS -->
+
+        <div class="categories">
+
+
+            <button
+                class="category-btn active"
+                data-category="All"
+            >
+                All
+            </button>
+
+
+            <button
+                class="category-btn"
+                data-category="Juices"
+            >
+                🥭 Juices
+            </button>
+
+
+            <button
+                class="category-btn"
+                data-category="Coffee"
+            >
+                ☕ Coffee
+            </button>
+
+
+            <button
+                class="category-btn"
+                data-category="Snacks"
+            >
+                🥪 Snacks
+            </button>
+
+
+            <button
+                class="category-btn"
+                data-category="Meals"
+            >
+                🍕 Meals
+            </button>
+
+
+        </div>
+
+
+
+        <!-- MENU -->
+
+        <div
+            id="menuGrid"
+            class="menu-grid"
+        >
+
+            <div class="loading">
+                ⏳ Loading menu...
+            </div>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        <p>
+            ☕ <strong>Amova Cafe</strong>
+        </p>
+
+
+        <p>
+            Fresh taste. Happy moments. ❤️
+        </p>
+
+
+        <p>
+            ©️ 2026 Amova Cafe
+        </p>
+
+    </footer>
+
+
+
+    <!-- TOAST -->
+
+    <div
+        id="toast"
+        class="toast"
+    ></div>
+
+
+
+    <!-- =====================================================
+         FIREBASE
+    ===================================================== -->
+
+    <script type="module">
+
+
+        import {
+            db,
+            auth
+        }
+        from "./js/firebase.js";
+
+
+        import {
+            collection,
+            getDocs
+        }
+        from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+        import {
+            onAuthStateChanged,
+            signOut
+        }
+        from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const menuGrid =
+            document.getElementById(
+                "menuGrid"
+            );
+
+
+        const searchInput =
+            document.getElementById(
+                "searchInput"
+            );
+
+
+        const cartCount =
+            document.getElementById(
+                "cartCount"
+            );
+
+
+        const loginLink =
+            document.getElementById(
+                "loginLink"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
+        const userBox =
+            document.getElementById(
+                "userBox"
+            );
+
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        let menuItems = [];
+
+        let selectedCategory = "All";
+
+
+
+        /* =====================================================
+           IMAGE FALLBACK
+        ===================================================== */
+
+        function getImageByName(name) {
+
+            const lower =
+                String(name || "")
+                    .toLowerCase()
+                    .trim();
+
+
+            if (
+                lower.includes("mango")
+            ) {
+
+                return "images/juice.jpg";
+
+            }
+
+
+            if (
+                lower.includes("orange")
+            ) {
+
+                return "images/orange-juice.jpg";
+
+            }
+
+
+            if (
+                lower.includes("pineapple")
+            ) {
+
+                return "images/pineapple.jpg";
+
+            }
+
+
+            if (
+                lower.includes("coffee")
+            ) {
+
+                return "images/coffee.jpg";
+
+            }
+
+
+            if (
+                lower.includes("sandwich") ||
+                lower.includes("sandwhich")
+            ) {
+
+                return "images/sandwich.jpg";
+
+            }
+
+
+            if (
+                lower.includes("burger")
+            ) {
+
+                return "images/burger.jpg";
+
+            }
+
+
+            if (
+                lower.includes("pizza")
+            ) {
+
+                return "images/pizza.jpg";
+
+            }
+
+
+            return "images/juice.jpg";
+
+        }
+
+
+
+        /* =====================================================
+           CART COUNT
+        ===================================================== */
+
+        function updateCartCount() {
+
+            const cart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "amovaCart"
+                    )
+                ) || [];
+
+
+            let count = 0;
+
+
+            cart.forEach(item => {
+
+                count +=
+                    Number(
+                        item.quantity
+                    ) || 0;
+
+            });
+
+
+            cartCount.textContent =
+                count;
+
+        }
+
+
+        updateCartCount();
+
+
+
+        /* =====================================================
+           LOAD MENU
+        ===================================================== */
+
+        async function loadMenu() {
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "menu"
+                        )
+                    );
+
+
+                menuItems = [];
+
+
+                snapshot.forEach(
+                    docSnapshot => {
+
+                        menuItems.push({
+
+                            id:
+                                docSnapshot.id,
+
+                            ...docSnapshot.data()
+
+                        });
+
+                    }
+                );
+
+
+                console.log(
+                    "Menu loaded:",
+                    menuItems
+                );
+
+
+                renderMenu();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Menu error:",
+                    error
+                );
+
+
+                menuGrid.innerHTML = `
+
+                    <div class="empty">
+
+                        <h3>
+                            Unable to load menu
+                        </h3>
+
+                        <p>
+                            Please refresh the page.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           CATEGORY FILTER
+           
+           IMPORTANT:
+           Coffee checks BOTH:
+           - item name
+           - item category
+        ===================================================== */
+
+        function categoryMatches(
+            item,
+            selected
+        ) {
+
+            const name =
+                String(
+                    item.name || ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+            const category =
+                String(
+                    item.category || ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+            const selectedCat =
+                String(
+                    selected || ""
+                )
+                .toLowerCase()
+                .trim();
+
+
+
+            /* ALL */
+
+            if (
+                selectedCat === "all"
+            ) {
+
+                return true;
+
+            }
+
+
+
+            /* COFFEE */
+
+            if (
+                selectedCat === "coffee"
+            ) {
+
+                return (
+                    name.includes("coffee") ||
+                    category.includes("coffee") ||
+                    category.includes("beverage")
+                );
+
+            }
+
+
+
+            /* JUICES */
+
+            if (
+                selectedCat === "juices"
+            ) {
+
+                return (
+                    name.includes("juice") ||
+                    category.includes("juice")
+                );
+
+            }
+
+
+
+            /* SNACKS */
+
+            if (
+                selectedCat === "snacks"
+            ) {
+
+                return (
+                    name.includes("sandwich") ||
+                    name.includes("sandwhich") ||
+                    name.includes("burger") ||
+                    category.includes("snack")
+                );
+
+            }
+
+
+
+            /* MEALS */
+
+            if (
+                selectedCat === "meals"
+            ) {
+
+                return (
+                    name.includes("pizza") ||
+                    name.includes("meal") ||
+                    category.includes("meal")
+                );
+
+            }
+
+
+
+            return false;
+
+        }
+
+
+
+        /* =====================================================
+           RENDER MENU
+        ===================================================== */
+
+        function renderMenu() {
+
+            const search =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const filtered =
+                menuItems.filter(
+                    item => {
+
+
+                        const name =
+                            String(
+                                item.name || ""
+                            )
+                            .toLowerCase();
+
+
+                        const category =
+                            String(
+                                item.category || ""
+                            )
+                            .toLowerCase();
+
+
+                        const matchesSearch =
+                            name.includes(
+                                search
+                            ) ||
+                            category.includes(
+                                search
+                            );
+
+
+                        const matchesCategory =
+                            categoryMatches(
+                                item,
+                                selectedCategory
+                            );
+
+
+                        return (
+                            matchesSearch &&
+                            matchesCategory
+                        );
+
+                    }
+                );
+
+
+
+            /* NO RESULT */
+
+            if (
+                filtered.length === 0
+            ) {
+
+                menuGrid.innerHTML = `
+
+                    <div class="empty">
+
+                        <h3>
+                            No items found 😕
+                        </h3>
+
+                        <p>
+                            Try another search.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            menuGrid.innerHTML = "";
+
+
+
+            /* CREATE CARDS */
+
+            filtered.forEach(
+                item => {
+
+
+                    const image =
+                        item.image ||
+                        getImageByName(
+                            item.name
+                        );
+
+
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
+
+
+                    const category =
+                        item.category ||
+                        "Food";
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "menu-card";
+
+
+                    card.innerHTML = `
+
+                        <div class="menu-image">
+
+                            <img
+                                src="${image}"
+                                alt="${item.name}"
+                                loading="lazy"
+                                onerror="
+                                    this.onerror=null;
+                                    this.src='${getImageByName(item.name)}';
+                                "
+                            >
+
+                        </div>
+
+
+                        <div class="menu-content">
+
+                            <h3 class="menu-name">
+                                ${item.name}
+                            </h3>
+
+
+                            <div class="menu-category">
+                                ${category}
+                            </div>
+
+
+                            <div class="menu-bottom">
+
+                                <div class="menu-price">
+                                    ₹${price}
+                                </div>
+
+
+                                <button
+                                    class="add-btn"
+                                    data-id="${item.id}"
+                                >
+                                    + Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+
+                    card
+                        .querySelector(
+                            ".add-btn"
+                        )
+                        .addEventListener(
+                            "click",
+                            () => {
+
+                                addToCart(item);
+
+                            }
+                        );
+
+
+                    menuGrid.appendChild(
+                        card
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           ADD TO CART
+        ===================================================== */
+
+        function addToCart(item) {
+
+            let cart =
+                JSON.parse(
+                    localStorage.getItem(
+                        "amovaCart"
+                    )
+                ) || [];
+
+
+            const existing =
+                cart.find(
+                    cartItem =>
+                        cartItem.id ===
+                        item.id
+                );
+
+
+            if (
+                existing
+            ) {
+
+                existing.quantity =
+                    Number(
+                        existing.quantity || 0
+                    ) + 1;
+
+            }
+
+            else {
+
+                cart.push({
+
+                    id:
+                        item.id,
+
+                    name:
+                        item.name,
+
+                    price:
+                        Number(
+                            item.price
+                        ) || 0,
+
+                    image:
+                        item.image ||
+                        getImageByName(
+                            item.name
+                        ),
+
+                    category:
+                        item.category ||
+                        "",
+
+                    quantity:
+                        1
+
+                });
+
+            }
+
+
+            localStorage.setItem(
+                "amovaCart",
+                JSON.stringify(
+                    cart
+                )
+            );
+
+
+            updateCartCount();
+
+
+            showToast(
+                `${item.name} added to cart 🛒`
+            );
+
+        }
+
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        let toastTimer;
+
+
+        function showToast(message) {
+
+            toast.textContent =
+                message;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            clearTimeout(
+                toastTimer
+            );
+
+
+            toastTimer =
+                setTimeout(
+                    () => {
+
+                        toast.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    2200
+                );
+
+        }
+
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        searchInput.addEventListener(
+            "input",
+            renderMenu
+        );
+
+
+
+        /* =====================================================
+           CATEGORY BUTTONS
+        ===================================================== */
+
+        document
+            .querySelectorAll(
+                ".category-btn"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+
+                            document
+                                .querySelectorAll(
+                                    ".category-btn"
+                                )
+                                .forEach(
+                                    btn => {
+
+                                        btn.classList.remove(
+                                            "active"
+                                        );
+
+                                    }
+                                );
+
+
+                            button.classList.add(
+                                "active"
+                            );
+
+
+                            selectedCategory =
+                                button.dataset
+                                    .category;
+
+
+                            renderMenu();
+
+                        }
+                    );
+
+                }
+            );
+
+
+
+        /* =====================================================
+           LOGIN STATE
+        ===================================================== */
+
+        onAuthStateChanged(
+            auth,
+            user => {
+
+
+                if (
+                    user
+                ) {
+
+                    loginLink.style.display =
+                        "none";
+
+
+                    logoutButton.style.display =
+                        "block";
+
+
+                    userBox.style.display =
+                        "block";
+
+
+                    const name =
+                        user.displayName ||
+                        (
+                            user.email
+                                ? user.email
+                                    .split("@")[0]
+                                : "Customer"
+                        );
+
+
+                    userName.textContent =
+                        "Hi, " + name;
+
+                }
+
+                else {
+
+                    loginLink.style.display =
+                        "block";
+
+
+                    logoutButton.style.display =
+                        "none";
+
+
+                    userBox.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        logoutButton.addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    showToast(
+                        "Logged out successfully"
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           START
+        ===================================================== */
+
+        loadMenu();
+
+    </script>
+
+</body>
+
+</html>

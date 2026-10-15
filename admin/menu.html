@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amova Cafe - Manage Menu</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f3ef;
+            color: #333;
+        }
+
+        header {
+            background: #6b3e26;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header h2 {
+            font-size: 22px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .customer-btn {
+            background: #4d2b1b;
+            color: white;
+        }
+
+        .logout-btn {
+            background: #c62828;
+            color: white;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 25px 15px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .top h1 {
+            color: #6b3e26;
+        }
+
+        .default-btn {
+            background: #168a45;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .form-box h3 {
+            color: #6b3e26;
+            margin-bottom: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .image-preview-box {
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .image-preview-box img {
+            width: 150px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            display: none;
+            margin: auto;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: #6b3e26;
+            color: white;
+        }
+
+        .cancel-btn {
+            width: 100%;
+            background: #777;
+            color: white;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .menu-item {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .menu-content {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .menu-image {
+            width: 130px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+            background: #eee;
+        }
+
+        .menu-details {
+            flex: 1;
+        }
+
+        .menu-item h3 {
+            color: #6b3e26;
+            margin-bottom: 8px;
+        }
+
+        .category {
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .edit-btn {
+            background: #1976d2;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .delete-btn {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .message {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            header h2 {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .buttons {
+                width: 100%;
+            }
+
+            .buttons button {
+                flex: 1;
+            }
+
+            .top h1 {
+                font-size: 22px;
+            }
+
+            .menu-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .menu-image {
+                width: 100%;
+                height: 180px;
+            }
+
+            .edit-btn,
+            .delete-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h2>☕ Amova Cafe Admin</h2>
+
+    <div class="buttons">
+
+        <button class="customer-btn" id="customerBtn">
+            🏠 Customer Site
+        </button>
+
+        <button class="logout-btn" id="logoutBtn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <div class="top">
+
+        <h1>📋 Manage Menu</h1>
+
+        <button class="default-btn" id="defaultBtn">
+            ⚡ Add All Default Menu Items
+        </button>
+
+    </div>
+
+
+    <div class="form-box">
+
+        <h3 id="formTitle">
+            ➕ Add New Menu Item
+        </h3>
+
+        <input
+            type="text"
+            id="itemName"
+            placeholder="Item name">
+
+        <input
+            type="number"
+            id="itemPrice"
+            placeholder="Price">
+
+        <select id="itemCategory">
+
+            <option value="Juices">Juices</option>
+            <option value="Coffee">Coffee</option>
+            <option value="Snacks">Snacks</option>
+            <option value="Meals">Meals</option>
+
+        </select>
+
+
+        <select id="itemImage">
+
+            <option value="images/juice.jpg">
+                🥭 Mango Juice
+            </option>
+
+            <option value="images/orange-juice.jpg">
+                🍊 Orange Juice
+            </option>
+
+            <option value="images/pineapple.jpg">
+                🍍 Pineapple Juice
+            </option>
+
+            <option value="images/coffee.jpg">
+                ☕ Cold Coffee
+            </option>
+
+            <option value="images/sandwich.jpg">
+                🥪 Veg Sandwich
+            </option>
+
+            <option value="images/burger.jpg">
+                🍔 Veg Burger
+            </option>
+
+            <option value="images/pizza.jpg">
+                🍕 Veg Pizza
+            </option>
+
+        </select>
+
+
+        <div class="image-preview-box">
+
+            <img
+                id="imagePreview"
+                alt="Image Preview">
+
+        </div>
+
+
+        <button class="save-btn" id="saveBtn">
+            💾 Save Menu Item
+        </button>
+
+        <button class="cancel-btn" id="cancelBtn">
+            ❌ Cancel Edit
+        </button>
+
+    </div>
+
+
+    <div id="menuList">
+
+        <div class="message">
+            Loading menu...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import { db, auth } from "../js/firebase.js";
+
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+const menuList =
+    document.getElementById("menuList");
+
+const itemName =
+    document.getElementById("itemName");
+
+const itemPrice =
+    document.getElementById("itemPrice");
+
+const itemCategory =
+    document.getElementById("itemCategory");
+
+const itemImage =
+    document.getElementById("itemImage");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const formTitle =
+    document.getElementById("formTitle");
+
+const saveBtn =
+    document.getElementById("saveBtn");
+
+const cancelBtn =
+    document.getElementById("cancelBtn");
+
+const defaultBtn =
+    document.getElementById("defaultBtn");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const customerBtn =
+    document.getElementById("customerBtn");
+
+
+let editingId = null;
+
+
+/* CUSTOMER SITE */
+
+customerBtn.addEventListener("click", function () {
+
+    window.location.href = "../index.html";
+
+});
+
+
+/* LOGOUT */
+
+logoutBtn.addEventListener("click", async function () {
+
+    await signOut(auth);
+
+    window.location.href = "login.html";
+
+});
+
+
+/* AUTH */
+
+onAuthStateChanged(auth, function (user) {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+    loadMenu();
+
+});
+
+
+/* IMAGE PREVIEW */
+
+itemImage.addEventListener("change", function () {
+
+    imagePreview.src = "../" + itemImage.value;
+
+    imagePreview.style.display = "block";
+
+});
+
+
+/* SHOW INITIAL IMAGE */
+
+imagePreview.src =
+    "../" + itemImage.value;
+
+imagePreview.style.display = "block";
+
+
+/* DEFAULT MENU ITEMS */
+
+const defaultItems = [
+
+    {
+        name: "Mango Juice",
+        price: 120,
+        category: "Juices",
+        image: "images/juice.jpg"
+    },
+
+    {
+        name: "Orange Juice",
+        price: 100,
+        category: "Juices",
+        image: "images/orange-juice.jpg"
+    },
+
+    {
+        name: "Pineapple Juice",
+        price: 120,
+        category: "Juices",
+        image: "images/pineapple.jpg"
+    },
+
+    {
+        name: "Cold Coffee",
+        price: 100,
+        category: "Coffee",
+        image: "images/coffee.jpg"
+    },
+
+    {
+        name: "Veg Sandwich",
+        price: 150,
+        category: "Snacks",
+        image: "images/sandwich.jpg"
+    },
+
+    {
+        name: "Veg Burger",
+        price: 130,
+        category: "Snacks",
+        image: "images/burger.jpg"
+    },
+
+    {
+        name: "Veg Pizza",
+        price: 180,
+        category: "Meals",
+        image: "images/pizza.jpg"
+    }
+
+];
+
+
+/* ADD DEFAULT ITEMS */
+
+defaultBtn.addEventListener("click", async function () {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "menu")
+            );
+
+
+        const existingNames = [];
+
+
+        snapshot.forEach(function (menuDoc) {
+
+            const data =
+                menuDoc.data();
+
+
+            if (data.name) {
+
+                existingNames.push(
+                    data.name.toLowerCase()
+                );
+
+            }
+
+        });
+
+
+        let added = 0;
+
+
+        for (const item of defaultItems) {
+
+            if (
+                !existingNames.includes(
+                    item.name.toLowerCase()
+                )
+            ) {
+
+                await addDoc(
+                    collection(db, "menu"),
+                    {
+                        name: item.name,
+                        price: item.price,
+                        category: item.category,
+                        image: item.image,
+                        createdAt: serverTimestamp()
+                    }
+                );
+
+                added++;
+
+            }
+
+        }
+
+
+        alert(
+            "✅ " +
+            added +
+            " default menu item(s) added!"
+        );
+
+
+        loadMenu();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ Error: " +
+            error.message
+        );
+
+    }
+
+});
+
+
+/* SAVE / UPDATE */
+
+saveBtn.addEventListener("click", async function () {
+
+    const name =
+        itemName.value.trim();
+
+    const price =
+        Number(itemPrice.value);
+
+    const category =
+        itemCategory.value;
+
+    const image =
+        itemImage.value;
+
+
+    if (!name || !price) {
+
+        alert(
+            "Please enter item name and price."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        if (editingId) {
+
+            await updateDoc(
+                doc(
+                    db,
+                    "menu",
+                    editingId
+                ),
+                {
+                    name: name,
+                    price: price,
+                    category: category,
+                    image: image
+                }
+            );
+
+
+            alert(
+                "✅ Menu item updated!"
+            );
+
+
+            editingId = null;
+
+            formTitle.innerText =
+                "➕ Add New Menu Item";
+
+            cancelBtn.style.display =
+                "none";
+
+
+        } else {
+
+            await addDoc(
+                collection(db, "menu"),
+                {
+                    name: name,
+                    price: price,
+                    category: category,
+                    image: image,
+                    createdAt: serverTimestamp()
+                }
+            );
+
+
+            alert(
+                "✅ Menu item added!"
+            );
+
+        }
+
+
+        clearForm();
+
+        loadMenu();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "❌ Error: " +
+            error.message
+        );
+
+    }
+
+});
+
+
+/* CANCEL EDIT */
+
+cancelBtn.addEventListener(
+    "click",
+    function () {
+
+        clearForm();
+
+        editingId = null;
+
+        formTitle.innerText =
+            "➕ Add New Menu Item";
+
+        cancelBtn.style.display =
+            "none";
+
+    }
+);
+
+
+/* CLEAR FORM */
+
+function clearForm() {
+
+    itemName.value = "";
+
+    itemPrice.value = "";
+
+    itemCategory.value =
+        "Juices";
+
+    itemImage.value =
+        "images/juice.jpg";
+
+    imagePreview.src =
+        "../images/juice.jpg";
+
+    imagePreview.style.display =
+        "block";
+
+}
+
+
+/* LOAD MENU */
+
+async function loadMenu() {
+
+    menuList.innerHTML =
+        '<div class="message">Loading menu...</div>';
+
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(db, "menu")
+            );
+
+
+        if (snapshot.empty) {
+
+            menuList.innerHTML =
+                '<div class="message">' +
+                'No menu items found.' +
+                '</div>';
+
+            return;
+
+        }
+
+
+        menuList.innerHTML = "";
+
+
+        snapshot.forEach(function (menuDoc) {
+
+            const item =
+                menuDoc.data();
+
+
+            const div =
+                document.createElement("div");
+
+            div.className =
+                "menu-item";
+
+
+            const content =
+                document.createElement("div");
+
+            content.className =
+                "menu-content";
+
+
+            /* IMAGE */
+
+            const image =
+                document.createElement("img");
+
+            image.className =
+                "menu-image";
+
+            image.src =
+                "../" +
+                (
+                    item.image ||
+                    getImageByName(item.name)
+                );
+
+            image.alt =
+                item.name || "Menu item";
+
+
+            image.onerror =
+                function () {
+
+                    this.src =
+                        "../images/juice.jpg";
+
+                };
+
+
+            /* DETAILS */
+
+            const details =
+                document.createElement("div");
+
+            details.className =
+                "menu-details";
+
+
+            const title =
+                document.createElement("h3");
+
+            title.innerText =
+                item.name ||
+                "Unnamed Item";
+
+
+            const category =
+                document.createElement("div");
+
+            category.className =
+                "category";
+
+            category.innerText =
+                "Category: " +
+                (
+                    item.category ||
+                    "Other"
+                );
+
+
+            const price =
+                document.createElement("div");
+
+            price.className =
+                "price";
+
+            price.innerText =
+                "₹" +
+                (
+                    item.price ||
+                    0
+                );
+
+
+            /* EDIT */
+
+            const editButton =
+                document.createElement("button");
+
+            editButton.className =
+                "edit-btn";
+
+            editButton.innerText =
+                "✏️ Edit";
+
+
+            editButton.addEventListener(
+                "click",
+                function () {
+
+                    editingId =
+                        menuDoc.id;
+
+
+                    itemName.value =
+                        item.name || "";
+
+
+                    itemPrice.value =
+                        item.price || "";
+
+
+                    itemCategory.value =
+                        item.category ||
+                        "Juices";
+
+
+                    itemImage.value =
+                        item.image ||
+                        getImageByName(item.name);
+
+
+                    imagePreview.src =
+                        "../" +
+                        itemImage.value;
+
+                    imagePreview.style.display =
+                        "block";
+
+
+                    formTitle.innerText =
+                        "✏️ Edit Menu Item";
+
+
+                    cancelBtn.style.display =
+                        "block";
+
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+
+            /* DELETE */
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className =
+                "delete-btn";
+
+            deleteButton.innerText =
+                "🗑️ Delete";
+
+
+            deleteButton.addEventListener(
+                "click",
+                async function () {
+
+                    const confirmDelete =
+                        confirm(
+                            "Delete " +
+                            (
+                                item.name ||
+                                "this item"
+                            ) +
+                            "?"
+                        );
+
+
+                    if (!confirmDelete) {
+
+                        return;
+
+                    }
+
+
+                    try {
+
+                        await deleteDoc(
+                            doc(
+                                db,
+                                "menu",
+                                menuDoc.id
+                            )
+                        );
+
+
+                        alert(
+                            "🗑️ Menu item deleted!"
+                        );
+
+
+                        loadMenu();
+
+
+                    } catch (error) {
+
+                        alert(
+                            "❌ Error: " +
+                            error.message
+                        );
+
+                    }
+
+                }
+            );
+
+
+            details.appendChild(title);
+
+            details.appendChild(category);
+
+            details.appendChild(price);
+
+            details.appendChild(editButton);
+
+            details.appendChild(deleteButton);
+
+
+            content.appendChild(image);
+
+            content.appendChild(details);
+
+
+            div.appendChild(content);
+
+            menuList.appendChild(div);
+
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        menuList.innerHTML =
+            '<div class="message">' +
+            '❌ Unable to load menu.<br><br>' +
+            error.message +
+            '</div>';
+
+    }
+
+}
+
+
+/* IMAGE FALLBACK FOR OLD ITEMS */
+
+function getImageByName(name) {
+
+    const itemName =
+        (name || "").toLowerCase();
+
+
+    if (itemName.includes("mango")) {
+        return "images/juice.jpg";
+    }
+
+    if (itemName.includes("orange")) {
+        return "images/orange-juice.jpg";
+    }
+
+    if (itemName.includes("pineapple")) {
+        return "images/pineapple.jpg";
+    }
+
+    if (itemName.includes("coffee")) {
+        return "images/coffee.jpg";
+    }
+
+    if (
+        itemName.includes("sandwich") ||
+        itemName.includes("sandwhich")
+    ) {
+        return "images/sandwich.jpg";
+    }
+
+    if (itemName.includes("burger")) {
+        return "images/burger.jpg";
+    }
+
+    if (itemName.includes("pizza")) {
+        return "images/pizza.jpg";
+    }
+
+    return "images/juice.jpg";
+
+}
+
+</script>
+
+</body>
+</html>

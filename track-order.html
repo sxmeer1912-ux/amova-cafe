@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order - Amova Cafe</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f7f3ef;
+    color:#333;
+}
+
+header{
+    background:#6b3e26;
+    color:white;
+    padding:18px;
+    text-align:center;
+}
+
+.container{
+    max-width:600px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+h2{
+    text-align:center;
+    color:#6b3e26;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    margin-bottom:12px;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:8px;
+    background:#6b3e26;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#512d1c;
+}
+
+#result{
+    margin-top:25px;
+}
+
+.order-info{
+    line-height:1.8;
+    margin-bottom:20px;
+}
+
+.status-box{
+    margin-top:20px;
+}
+
+.step{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:15px 0;
+    color:#aaa;
+    font-weight:bold;
+}
+
+.circle{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#ddd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.step.active{
+    color:#6b3e26;
+}
+
+.step.active .circle{
+    background:#6b3e26;
+    color:white;
+}
+
+.items{
+    background:#f7f3ef;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+.items div{
+    padding:6px 0;
+}
+
+.error{
+    color:#c62828;
+    text-align:center;
+    margin-top:15px;
+}
+
+.success{
+    color:green;
+    text-align:center;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.loading{
+    text-align:center;
+    color:#6b3e26;
+}
+
+.back{
+    margin-top:15px;
+    background:#555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>☕ Amova Cafe</h1>
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>📦 Track Your Order</h2>
+
+<input
+    type="text"
+    id="orderNumber"
+    placeholder="Enter Order Number e.g. AMV-001"
+>
+
+<button onclick="trackOrder()">
+    🔍 Track Order
+</button>
+
+<div id="result"></div>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { db, auth } from "./js/firebase.js";
+
+import {
+    collection,
+    query,
+    where,
+    getDocs,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+import {
+    signInAnonymously,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+const orderInput =
+    document.getElementById("orderNumber");
+
+const result =
+    document.getElementById("result");
+
+let currentUnsubscribe = null;
+
+
+/*
+    --------------------------------
+    FIREBASE ANONYMOUS LOGIN
+    --------------------------------
+*/
+
+async function makeCustomerSession(){
+
+    if(auth.currentUser){
+        return auth.currentUser;
+    }
+
+    const userCredential =
+        await signInAnonymously(auth);
+
+    return userCredential.user;
+}
+
+
+/*
+    --------------------------------
+    TRACK ORDER
+    --------------------------------
+*/
+
+async function trackOrder(){
+
+    const orderNumber =
+        orderInput.value.trim().toUpperCase();
+
+    if(!orderNumber){
+
+        result.innerHTML =
+            `<p class="error">
+                Please enter your order number.
+            </p>`;
+
+        return;
+    }
+
+    result.innerHTML =
+        `<p class="loading">
+            🔐 Connecting securely...
+        </p>`;
+
+    try{
+
+        /*
+            Customer gets an anonymous Firebase
+            authentication session first.
+        */
+
+        await makeCustomerSession();
+
+
+        result.innerHTML =
+            `<p class="loading">
+                🔍 Searching order...
+            </p>`;
+
+
+        const q = query(
+            collection(db,"orders"),
+            where("orderNumber","==",orderNumber)
+        );
+
+
+        const snapshot =
+            await getDocs(q);
+
+
+        if(snapshot.empty){
+
+            result.innerHTML =
+                `<p class="error">
+                    ❌ Order ${orderNumber} not found.
+                </p>`;
+
+            return;
+        }
+
+
+        const orderDoc =
+            snapshot.docs[0];
+
+
+        displayOrder(orderDoc.data());
+
+
+        /*
+            Start real-time updates.
+        */
+
+        listenForUpdates(orderDoc.id);
+
+
+    }catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            `<p class="error">
+                ❌ Unable to track order.
+                <br><br>
+                Please try again.
+            </p>`;
+    }
+}
+
+
+/*
+    --------------------------------
+    REAL-TIME ORDER UPDATES
+    --------------------------------
+*/
+
+function listenForUpdates(orderId){
+
+    /*
+        Stop previous listener.
+    */
+
+    if(currentUnsubscribe){
+        currentUnsubscribe();
+    }
+
+
+    const orderQuery = query(
+        collection(db,"orders"),
+        where("__name__","==",orderId)
+    );
+
+
+    currentUnsubscribe =
+        onSnapshot(
+            orderQuery,
+            (snapshot)=>{
+
+                if(!snapshot.empty){
+
+                    const orderData =
+                        snapshot.docs[0].data();
+
+                    displayOrder(orderData);
+                }
+
+            },
+            (error)=>{
+
+                console.error(
+                    "Tracking listener error:",
+                    error
+                );
+
+            }
+        );
+}
+
+
+/*
+    --------------------------------
+    DISPLAY ORDER
+    --------------------------------
+*/
+
+function displayOrder(order){
+
+    const status =
+        order.status || "New";
+
+
+    const statuses = [
+        "New",
+        "Preparing",
+        "Ready",
+        "Completed"
+    ];
+
+
+    const currentIndex =
+        statuses.indexOf(status);
+
+
+    let steps = "";
+
+
+    statuses.forEach((item,index)=>{
+
+        const active =
+            index <= currentIndex
+            ? "active"
+            : "";
+
+
+        let icon = "⏳";
+
+
+        if(item === "New")
+            icon = "📝";
+
+        if(item === "Preparing")
+            icon = "👨‍🍳";
+
+        if(item === "Ready")
+            icon = "✅";
+
+        if(item === "Completed")
+            icon = "🎉";
+
+
+        steps += `
+
+            <div class="step ${active}">
+
+                <div class="circle">
+                    ${icon}
+                </div>
+
+                <span>
+                    ${item}
+                </span>
+
+            </div>
+
+        `;
+    });
+
+
+    let itemsHTML = "";
+
+
+    if(order.items){
+
+        order.items.forEach(item => {
+
+            const itemTotal =
+                Number(item.price || 0) *
+                Number(item.quantity || 0);
+
+
+            itemsHTML += `
+
+                <div>
+
+                    ${item.name}
+                    × ${item.quantity}
+
+                    — ₹${itemTotal}
+
+                </div>
+
+            `;
+
+        });
+    }
+
+
+    const subtotal =
+        order.subtotal !== undefined
+        ? order.subtotal
+        : order.total || 0;
+
+
+    const deliveryCharge =
+        order.deliveryCharge || 0;
+
+
+    const total =
+        order.total || 0;
+
+
+    result.innerHTML = `
+
+        <div class="success">
+            ✅ Order Found
+        </div>
+
+
+        <div class="order-info">
+
+            <p>
+                <b>Order Number:</b>
+                ${order.orderNumber || "-"}
+            </p>
+
+
+            <p>
+                <b>Name:</b>
+                ${order.customerName || "-"}
+            </p>
+
+
+            <p>
+                <b>Order Type:</b>
+                ${order.orderType || "-"}
+            </p>
+
+
+            <p>
+                <b>Payment:</b>
+                ${order.paymentMethod || "-"}
+            </p>
+
+
+            <p>
+                <b>Subtotal:</b>
+                ₹${subtotal}
+            </p>
+
+
+            <p>
+                <b>Delivery Charge:</b>
+                ₹${deliveryCharge}
+            </p>
+
+
+            <p>
+                <b>Total:</b>
+                ₹${total}
+            </p>
+
+        </div>
+
+
+        <div class="status-box">
+
+            <h3>
+                📦 Order Status
+            </h3>
+
+            ${steps}
+
+        </div>
+
+
+        <div class="items">
+
+            <h3>
+                🛒 Items
+            </h3>
+
+            ${itemsHTML}
+
+        </div>
+
+    `;
+}
+
+
+/*
+    Make function available
+    to HTML button.
+*/
+
+window.trackOrder =
+    trackOrder;
+
+
+/*
+    --------------------------------
+    AUTO TRACK FROM URL
+    --------------------------------
+*/
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const urlOrder =
+    params.get("order");
+
+
+if(urlOrder){
+
+    orderInput.value =
+        urlOrder.toUpperCase();
+
+    trackOrder();
+}
+
+</script>
+
+</body>
+</html>

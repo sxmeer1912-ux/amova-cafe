@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Test - Amova Cafe</title>
+</head>
+
+<body>
+
+    <h2>Amova Cafe - Razorpay Test</h2>
+
+    <button onclick="startPayment()">
+        💳 Test ₹100 Payment
+    </button>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+
+        async function startPayment() {
+
+            console.log("Creating Razorpay order...");
+
+            const response = await fetch("http://localhost:3000/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    amount: 100
+                })
+            });
+
+            const order = await response.json();
+
+            console.log("Razorpay Order:", order);
+
+            const options = {
+
+                key: "rzp_test_TeIJMAksBDa4IZ",
+
+                amount: order.amount,
+
+                currency: "INR",
+
+                name: "Amova Cafe",
+
+                description: "Test Payment",
+
+                order_id: order.id,
+
+                handler: function (response) {
+
+                    console.log("Payment Response:", response);
+
+                    alert("Payment successful!");
+
+                },
+
+                theme: {
+                    color: "#6b3e26"
+                }
+
+            };
+
+            console.log("Opening Razorpay Checkout...");
+
+            const razorpay = new Razorpay(options);
+
+            razorpay.open();
+        }
+
+    </script>
+
+</body>
+</html>

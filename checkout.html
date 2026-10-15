@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout - Amova Cafe</title>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#fff8f0;
+    color:#333;
+}
+
+header{
+    background:#6b3e26;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h2{
+    font-size:22px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.back-btn{
+    background:#ffd166;
+    border:0;
+    padding:10px 15px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.login-warning{
+    background:#fff3cd;
+    border:1px solid #ffe08a;
+    color:#856404;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.login-warning button{
+    margin-top:10px;
+    background:#6b3e26;
+    color:white;
+    border:0;
+    padding:10px 18px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.container{
+    max-width:900px;
+    margin:30px auto;
+    padding:0 15px;
+}
+
+.box{
+    background:white;
+    padding:25px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.1);
+}
+
+h2{
+    color:#6b3e26;
+    margin-bottom:18px;
+}
+
+.order-item{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.price-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    font-size:17px;
+}
+
+.delivery-row{
+    color:#2a9d8f;
+    font-weight:bold;
+}
+
+.grand-total{
+    display:flex;
+    justify-content:space-between;
+    border-top:2px solid #ddd;
+    margin-top:10px;
+    padding-top:15px;
+    font-size:23px;
+    font-weight:bold;
+    color:#e76f51;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+input:disabled{
+    background:#f3f3f3;
+    color:#666;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.payment-option{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.payment-option input{
+    width:auto;
+}
+
+.place-order{
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    border:0;
+    border-radius:10px;
+    background:#2a9d8f;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.place-order:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.success{
+    display:none;
+    text-align:center;
+}
+
+.success h1{
+    color:#2a9d8f;
+    margin-bottom:15px;
+}
+
+.order-number{
+    font-size:28px;
+    font-weight:bold;
+    color:#6b3e26;
+    margin:15px 0;
+}
+
+.success button{
+    padding:12px 18px;
+    margin:8px;
+    border:0;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.track{
+    background:#ffd166;
+}
+
+.home{
+    background:#6b3e26;
+    color:white;
+}
+
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:15px;
+    color:#6b3e26;
+    font-weight:bold;
+}
+
+.error-message{
+    color:#c62828;
+    margin-top:10px;
+    text-align:center;
+}
+
+@media(max-width:600px){
+
+    header h2{
+        font-size:18px;
+    }
+
+    header{
+        padding:12px 10px;
+    }
+
+    .container{
+        margin:20px auto;
+    }
+
+    .box{
+        padding:18px;
+    }
+
+    .grand-total{
+        font-size:21px;
+    }
+
+    .user-name{
+        display:none;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h2>☕ Amova Cafe</h2>
+
+    <div class="header-right">
+
+        <span
+            id="headerUserName"
+            class="user-name">
+        </span>
+
+        <button
+            class="back-btn"
+            onclick="window.location.href='index.html'">
+
+            ← Menu
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- CHECKOUT -->
+
+    <div id="checkoutSection">
+
+
+        <!-- LOGIN WARNING -->
+
+        <div
+            id="loginWarning"
+            class="login-warning"
+            style="display:none;">
+
+            🔐 Please login or create an account
+            before placing your order.
+
+            <br>
+
+            <button
+                onclick="window.location.href='login.html'">
+
+                Login / Sign Up
+
+            </button>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="box">
+
+            <h2>🛒 Your Order</h2>
+
+            <div id="orderItems"></div>
+
+
+            <div class="price-row">
+
+                <span>Subtotal</span>
+
+                <span>
+                    ₹<span id="subtotal">0</span>
+                </span>
+
+            </div>
+
+
+            <div class="price-row delivery-row">
+
+                <span>🚚 Delivery Charge</span>
+
+                <span>
+                    ₹<span id="deliveryCharge">0</span>
+                </span>
+
+            </div>
+
+
+            <div class="grand-total">
+
+                <span>Final Total</span>
+
+                <span>
+                    ₹<span id="orderTotal">0</span>
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div class="box">
+
+            <h2>👤 Customer Details</h2>
+
+
+            <label>Name</label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+            >
+
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Login email"
+                disabled
+            >
+
+
+            <label>Mobile Number</label>
+
+            <input
+                type="tel"
+                id="mobile"
+                placeholder="Enter 10 digit mobile number"
+                maxlength="10"
+                inputmode="numeric"
+            >
+
+
+            <label>Order Type</label>
+
+            <select id="orderType">
+
+                <option value="Pickup">
+                    Pickup - ₹0 Delivery Charge
+                </option>
+
+                <option value="Delivery">
+                    Delivery - ₹30 Delivery Charge
+                </option>
+
+            </select>
+
+
+            <label>Delivery Address</label>
+
+            <textarea
+                id="address"
+                placeholder="Enter delivery address">
+            </textarea>
+
+        </div>
+
+
+        <!-- PAYMENT -->
+
+        <div class="box">
+
+            <h2>💳 Payment Method</h2>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="COD"
+                    checked
+                >
+
+                💵 Cash on Delivery / Pickup
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment"
+                    value="ONLINE"
+                >
+
+                💳 Pay Online with Razorpay
+
+            </label>
+
+
+            <button
+                class="place-order"
+                id="placeOrderButton"
+                onclick="placeOrder()">
+
+                ✅ Place Order
+
+            </button>
+
+
+            <div
+                class="loading"
+                id="loading">
+
+                ⏳ Please wait...
+
+            </div>
+
+
+            <div
+                id="errorMessage"
+                class="error-message">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS -->
+
+    <div
+        class="box success"
+        id="successSection">
+
+        <h1>
+            🎉 Order Placed Successfully!
+        </h1>
+
+
+        <p>
+            Your order number is:
+        </p>
+
+
+        <div
+            class="order-number"
+            id="successOrderNumber">
+        </div>
+
+
+        <p>
+            Thank you for ordering from Amova Cafe ❤️
+        </p>
+
+
+        <button
+            class="track"
+            onclick="trackOrder()">
+
+            📦 Track My Order
+
+        </button>
+
+
+        <button
+            class="home"
+            onclick="window.location.href='index.html'">
+
+            🏠 Back Home
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+
+/* =========================================
+   FIREBASE
+========================================= */
+
+import {
+    db,
+    auth
+}
+from "./js/firebase.js";
+
+
+import {
+    collection,
+    addDoc,
+    doc,
+    runTransaction,
+    serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+import {
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+
+/* =========================================
+   SETTINGS
+========================================= */
+
+const DELIVERY_CHARGE = 30;
+
+
+/*
+    Automatically detects current website host.
+
+    Mac:
+    http://localhost:3000
+
+    Mobile:
+    http://192.168.0.103:3000
+
+    If using Live Server:
+    backend will still use port 3000.
+*/
+
+const API_BASE_URL =
+    `${window.location.protocol}//${window.location.hostname}:3000`;
+
+
+
+/* =========================================
+   CART
+========================================= */
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("amovaCart")
+    ) || [];
+
+
+let subtotal = 0;
+
+let deliveryCharge = 0;
+
+let total = 0;
+
+let currentUser = null;
+
+
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const orderItems =
+    document.getElementById("orderItems");
+
+const subtotalElement =
+    document.getElementById("subtotal");
+
+const deliveryChargeElement =
+    document.getElementById("deliveryCharge");
+
+const orderTotal =
+    document.getElementById("orderTotal");
+
+const orderTypeElement =
+    document.getElementById("orderType");
+
+const loading =
+    document.getElementById("loading");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const placeOrderButton =
+    document.getElementById("placeOrderButton");
+
+const loginWarning =
+    document.getElementById("loginWarning");
+
+const nameInput =
+    document.getElementById("name");
+
+const emailInput =
+    document.getElementById("email");
+
+const headerUserName =
+    document.getElementById("headerUserName");
+
+
+
+/* =========================================
+   CHECK LOGIN STATUS
+========================================= */
+
+onAuthStateChanged(
+    auth,
+    (user) => {
+
+        currentUser = user;
+
+
+        if(user){
+
+            loginWarning.style.display =
+                "none";
+
+
+            placeOrderButton.disabled =
+                cart.length === 0;
+
+
+            const userName =
+                user.displayName ||
+                user.email
+                .split("@")[0];
+
+
+            nameInput.value =
+                userName;
+
+
+            emailInput.value =
+                user.email || "";
+
+
+            headerUserName.textContent =
+                "Hi, " + userName;
+
+        }
+        else{
+
+            loginWarning.style.display =
+                "block";
+
+
+            placeOrderButton.disabled =
+                true;
+
+
+            headerUserName.textContent =
+                "";
+
+        }
+
+    }
+);
+
+
+
+/* =========================================
+   CALCULATE TOTAL
+========================================= */
+
+function calculateTotal(){
+
+    deliveryCharge =
+        orderTypeElement.value === "Delivery"
+        ? DELIVERY_CHARGE
+        : 0;
+
+
+    total =
+        subtotal + deliveryCharge;
+
+
+    subtotalElement.textContent =
+        subtotal;
+
+
+    deliveryChargeElement.textContent =
+        deliveryCharge;
+
+
+    orderTotal.textContent =
+        total;
+
+}
+
+
+
+/* =========================================
+   DISPLAY CART
+========================================= */
+
+function displayCart(){
+
+    orderItems.innerHTML = "";
+
+    subtotal = 0;
+
+
+    if(cart.length === 0){
+
+        orderItems.innerHTML =
+            "<p>Your cart is empty.</p>";
+
+        calculateTotal();
+
+        placeOrderButton.disabled =
+            true;
+
+        return;
+
+    }
+
+
+    cart.forEach(item => {
+
+        const price =
+            Number(item.price) || 0;
+
+        const quantity =
+            Number(item.quantity) || 0;
+
+
+        const itemTotal =
+            price * quantity;
+
+
+        subtotal += itemTotal;
+
+
+        orderItems.innerHTML += `
+
+            <div class="order-item">
+
+                <div>
+
+                    <strong>
+                        ${item.name}
+                    </strong>
+
+                    <br>
+
+                    ₹${price} × ${quantity}
+
+                </div>
+
+                <strong>
+                    ₹${itemTotal}
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+
+    calculateTotal();
+
+
+    if(currentUser){
+
+        placeOrderButton.disabled =
+            false;
+
+    }
+
+}
+
+
+displayCart();
+
+
+
+/* =========================================
+   ORDER TYPE
+========================================= */
+
+orderTypeElement.addEventListener(
+    "change",
+    calculateTotal
+);
+
+
+
+/* =========================================
+   CUSTOMER DETAILS
+========================================= */
+
+function getCustomerDetails(){
+
+
+    if(!currentUser){
+
+        alert(
+            "Please Login or Sign Up before placing your order."
+        );
+
+        window.location.href =
+            "login.html";
+
+        return null;
+
+    }
+
+
+    const name =
+        nameInput.value.trim();
+
+
+    const email =
+        emailInput.value.trim();
+
+
+    const mobile =
+        document.getElementById("mobile")
+        .value
+        .trim();
+
+
+    const orderType =
+        orderTypeElement.value;
+
+
+    const address =
+        document.getElementById("address")
+        .value
+        .trim();
+
+
+    const paymentElement =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        );
+
+
+    const payment =
+        paymentElement
+        ? paymentElement.value
+        : "COD";
+
+
+    if(!name){
+
+        alert(
+            "Please enter your name."
+        );
+
+        return null;
+
+    }
+
+
+    if(!mobile ||
+       !/^[0-9]{10}$/.test(mobile)){
+
+        alert(
+            "Please enter a valid 10 digit mobile number."
+        );
+
+        return null;
+
+    }
+
+
+    if(
+        orderType === "Delivery" &&
+        !address
+    ){
+
+        alert(
+            "Please enter delivery address."
+        );
+
+        return null;
+
+    }
+
+
+    if(cart.length === 0){
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return null;
+
+    }
+
+
+    calculateTotal();
+
+
+    return {
+
+        name,
+
+        email,
+
+        mobile,
+
+        orderType,
+
+        address,
+
+        payment,
+
+        uid:
+            currentUser.uid
+
+    };
+
+}
+
+
+
+/* =========================================
+   GENERATE ORDER NUMBER
+========================================= */
+
+async function generateOrderNumber(){
+
+    const counterRef =
+        doc(
+            db,
+            "settings",
+            "orderCounter"
+        );
+
+
+    return await runTransaction(
+        db,
+        async(transaction) => {
+
+            const counterDoc =
+                await transaction.get(
+                    counterRef
+                );
+
+
+            let nextNumber = 1;
+
+
+            if(counterDoc.exists()){
+
+                nextNumber =
+                    (
+                        counterDoc.data()
+                        .lastNumber || 0
+                    ) + 1;
+
+            }
+
+
+            transaction.set(
+                counterRef,
+                {
+                    lastNumber: nextNumber
+                }
+            );
+
+
+            return "AMV-" +
+                String(nextNumber)
+                .padStart(3,"0");
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   SAVE ORDER
+========================================= */
+
+async function saveOrder(
+    customer,
+    orderNumber,
+    paymentId = ""
+){
+
+    return await addDoc(
+        collection(db,"orders"),
+        {
+
+            orderNumber:
+                orderNumber,
+
+            customerName:
+                customer.name,
+
+            customerEmail:
+                customer.email,
+
+            customerUid:
+                customer.uid,
+
+            mobile:
+                customer.mobile,
+
+            orderType:
+                customer.orderType,
+
+            address:
+                customer.address,
+
+            paymentMethod:
+                customer.payment,
+
+            paymentId:
+                paymentId,
+
+            items:
+                cart,
+
+            subtotal:
+                subtotal,
+
+            deliveryCharge:
+                deliveryCharge,
+
+            total:
+                total,
+
+            status:
+                "New",
+
+            createdAt:
+                serverTimestamp()
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   COD ORDER
+========================================= */
+
+async function placeCODOrder(
+    customer
+){
+
+    const orderNumber =
+        await generateOrderNumber();
+
+
+    await saveOrder(
+        customer,
+        orderNumber
+    );
+
+
+    localStorage.setItem(
+        "lastOrderNumber",
+        orderNumber
+    );
+
+
+    localStorage.removeItem(
+        "amovaCart"
+    );
+
+
+    showSuccess(
+        orderNumber
+    );
+
+}
+
+
+
+/* =========================================
+   ONLINE PAYMENT
+========================================= */
+
+async function payOnline(
+    customer
+){
+
+    try{
+
+        loading.style.display =
+            "block";
+
+
+        loading.textContent =
+            "⏳ Creating Razorpay order...";
+
+
+        errorMessage.textContent =
+            "";
+
+
+        console.log(
+            "Backend URL:",
+            API_BASE_URL
+        );
+
+
+        const response =
+            await fetch(
+                `${API_BASE_URL}/create-order`,
+                {
+
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            amount:
+                                Number(total)
+
+                        })
+
+                }
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        let razorpayOrder;
+
+
+        try{
+
+            razorpayOrder =
+                JSON.parse(
+                    responseText
+                );
+
+        }
+        catch(error){
+
+            console.error(
+                "Invalid backend response:",
+                responseText
+            );
+
+            throw new Error(
+                "Payment server returned an invalid response."
+            );
+
+        }
+
+
+        console.log(
+            "Razorpay Order:",
+            razorpayOrder
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                razorpayOrder.error ||
+                "Unable to create Razorpay order"
+            );
+
+        }
+
+
+        if(!razorpayOrder.id){
+
+            throw new Error(
+                "Razorpay Order ID missing"
+            );
+
+        }
+
+
+        const options = {
+
+            key:
+                "rzp_test_TeIJMAksBDa4IZ",
+
+            amount:
+                razorpayOrder.amount,
+
+            currency:
+                "INR",
+
+            name:
+                "Amova Cafe",
+
+            description:
+                "Cafe Order",
+
+            order_id:
+                razorpayOrder.id,
+
+            prefill:{
+
+                name:
+                    customer.name,
+
+                email:
+                    customer.email,
+
+                contact:
+                    customer.mobile
+
+            },
+
+            theme:{
+
+                color:
+                    "#6b3e26"
+
+            },
+
+
+            handler:
+                async function(
+                    paymentResponse
+                ){
+
+                    try{
+
+                        loading.style.display =
+                            "block";
+
+
+                        loading.textContent =
+                            "⏳ Verifying payment...";
+
+
+                        const verifyResponse =
+                            await fetch(
+                                `${API_BASE_URL}/verify-payment`,
+                                {
+
+                                    method:"POST",
+
+                                    headers:{
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            razorpay_order_id:
+                                                paymentResponse
+                                                .razorpay_order_id,
+
+                                            razorpay_payment_id:
+                                                paymentResponse
+                                                .razorpay_payment_id,
+
+                                            razorpay_signature:
+                                                paymentResponse
+                                                .razorpay_signature
+
+                                        })
+
+                                }
+                            );
+
+
+                        const verifyText =
+                            await verifyResponse.text();
+
+
+                        let verification;
+
+
+                        try{
+
+                            verification =
+                                JSON.parse(
+                                    verifyText
+                                );
+
+                        }
+                        catch(error){
+
+                            console.error(
+                                "Invalid verification response:",
+                                verifyText
+                            );
+
+                            throw new Error(
+                                "Payment verification server returned an invalid response."
+                            );
+
+                        }
+
+
+                        if(
+                            !verifyResponse.ok ||
+                            !verification.success
+                        ){
+
+                            throw new Error(
+                                "Payment verification failed."
+                            );
+
+                        }
+
+
+                        const orderNumber =
+                            await generateOrderNumber();
+
+
+                        await saveOrder(
+                            customer,
+                            orderNumber,
+                            paymentResponse
+                            .razorpay_payment_id
+                        );
+
+
+                        localStorage.setItem(
+                            "lastOrderNumber",
+                            orderNumber
+                        );
+
+
+                        localStorage.removeItem(
+                            "amovaCart"
+                        );
+
+
+                        showSuccess(
+                            orderNumber
+                        );
+
+                    }
+                    catch(error){
+
+                        console.error(
+                            "Payment verification error:",
+                            error
+                        );
+
+
+                        alert(
+                            "Payment successful, but order confirmation failed. Please contact Amova Cafe."
+                        );
+
+
+                        loading.style.display =
+                            "none";
+
+                    }
+
+                },
+
+
+            modal:{
+
+                ondismiss:function(){
+
+                    loading.style.display =
+                        "none";
+
+
+                    placeOrderButton.disabled =
+                        false;
+
+                }
+
+            }
+
+        };
+
+
+        const razorpay =
+            new Razorpay(
+                options
+            );
+
+
+        razorpay.open();
+
+    }
+    catch(error){
+
+        console.error(
+            "Razorpay Error:",
+            error
+        );
+
+
+        errorMessage.textContent =
+            error.message ||
+            "Unable to start online payment.";
+
+
+        alert(
+            error.message ||
+            "Unable to start online payment."
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        placeOrderButton.disabled =
+            false;
+
+    }
+
+}
+
+
+
+/* =========================================
+   PLACE ORDER
+========================================= */
+
+async function placeOrder(){
+
+    const customer =
+        getCustomerDetails();
+
+
+    if(!customer){
+
+        return;
+
+    }
+
+
+    try{
+
+        placeOrderButton.disabled =
+            true;
+
+
+        loading.style.display =
+            "block";
+
+
+        loading.textContent =
+            "⏳ Processing...";
+
+
+        errorMessage.textContent =
+            "";
+
+
+        if(
+            customer.payment === "COD"
+        ){
+
+            await placeCODOrder(
+                customer
+            );
+
+        }
+        else{
+
+            await payOnline(
+                customer
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(
+            "Place order error:",
+            error
+        );
+
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        placeOrderButton.disabled =
+            false;
+
+    }
+
+}
+
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+function showSuccess(
+    orderNumber
+){
+
+    document.getElementById(
+        "checkoutSection"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "successSection"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "successOrderNumber"
+    ).textContent =
+        orderNumber;
+
+
+    loading.style.display =
+        "none";
+
+}
+
+
+
+/* =========================================
+   TRACK ORDER
+========================================= */
+
+function trackOrder(){
+
+    const orderNumber =
+        localStorage.getItem(
+            "lastOrderNumber"
+        );
+
+
+    if(orderNumber){
+
+        window.location.href =
+            "track-order.html?order=" +
+            encodeURIComponent(
+                orderNumber
+            );
+
+    }
+    else{
+
+        window.location.href =
+            "track-order.html";
+
+    }
+
+}
+
+
+
+/* =========================================
+   GLOBAL FUNCTIONS
+========================================= */
+
+window.placeOrder =
+    placeOrder;
+
+
+window.trackOrder =
+    trackOrder;
+
+
+console.log(
+    "Amova Cafe Backend:",
+    API_BASE_URL
+);
+
+</script>
+
+</body>
+
+</html>
